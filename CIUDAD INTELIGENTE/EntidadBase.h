@@ -3,28 +3,20 @@
 #include "IEntidad.h"
 using namespace std;
 
-class EntidadBase : public IEntidad
-{
+//LOS ATRIBUTOS NOMBRE Y ACTIVO SON PROTECTED
+//"EL MUNDO EXTERIOR NO SABE CÓMO SE GUARDAN, SOLO SE ACCEDE VÍA MÉTODOS PÚBLICOS"
+
+
+class EntidadBase : public IEntidad {
 protected:
-	string nombre;
-	bool activo; //Parnas: El estado iterno esta protegido
+    string nombre;
+    bool activo;
 
 public:
-	EntidadBase(string n) : nombre(n), activo(true) {}
-	string getNombre() const override
-	{
-		return nombre;
-	}
-
-	virtual void alternarEstado()
-	{
-		activo = !activo;
-	}
-
-	bool estaActivo() const
-	{
-		return activo;
-	}
-
+    EntidadBase(string n);
+    string getNombre() const override;
+    virtual void alternarEstado();
+    bool isActivo() const;
 };
+
 

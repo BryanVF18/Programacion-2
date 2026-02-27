@@ -1,19 +1,18 @@
 #include "ComplejoIndustrial.h"
 
-
-ComplejoIndustrial::ComplejoIndustrial(string n, double prod, double cons) :EntidadBase(n), produccionPropia(prod), consumoMaquinaria(cons) {
-
+ComplejoIndustrial::ComplejoIndustrial(std::string n, double prod, double cons)
+    : EntidadBase(n), produccionPropia(prod), consumoMaquinaria(cons) {
 }
 
 double ComplejoIndustrial::producirEnergia() {
-	return activo ? produccionPropia : 0.0;
+    return activo ? produccionPropia : 0.0;
 }
 
 double ComplejoIndustrial::consumirEnergia() {
-	return activo ? consumoMaquinaria : 0.0;
+    return activo ? consumoMaquinaria : 0.0;
 }
 
-string ComplejoIndustrial::getDetalleEstado()const {
-	bool autosuficiente = produccionPropia >= consumoMaquinaria;
-	return "Tipo: [Hibrido] | Autosuficiente: " + string(autosuficiente ? "Si" : "No");
+std::string ComplejoIndustrial::getDetalleEstado() const {
+    bool autosuficiente = produccionPropia >= consumoMaquinaria;
+    return "Tipo: [Híbrido]   | Autosuficiente: " + std::string(autosuficiente ? "SI" : "NO");
 }

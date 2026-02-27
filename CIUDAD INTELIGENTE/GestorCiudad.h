@@ -4,15 +4,17 @@
 #include "IEntidad.h"
 #include "IProductor.h"
 #include "IConsumidor.h"
-using namespace std;
 
+//PRINCIPIO ABIERTO/CERRADO
+//SOLID(O) EL GESTOR ESTA CERRADO A LA MODIFICACION, SOLO "MUEVE DATOS" NO SE TOCA PARA AGREGAR NUEVAS ENTIDADES
 class GestorCiudad {
-	private:
-	vector<shared_ptr<IEntidad>> entidades;
-	int turnoActual;	
+private:
+    std::vector<std::shared_ptr<IEntidad>> entidades;
+    int turnoActual;
+    void mostrarBalance(double prod, double cons) const; // Ley de Deméter (privado)
+
 public:
-	GestorCiudad();
-	void agregarEntidad(shared_ptr<IEntidad> nuevaentidad);
-	void procesarTurno();
-	void mostrarBalance(double prod, double cons)const;
+    GestorCiudad();
+    void agregarEntidad(std::shared_ptr<IEntidad> nuevaEntidad);
+    void procesarTurno();
 };

@@ -1,11 +1,6 @@
 #pragma once
-#include <string>
-using namespace std;
-
-class IProductor
-{
+class IProductor {
 public:
-	virtual ~IProductor() = default;
-	virtual double producirEnergia() = 0;
-
+    virtual ~IProductor() = default;
+    virtual double producirEnergia() = 0;
 };

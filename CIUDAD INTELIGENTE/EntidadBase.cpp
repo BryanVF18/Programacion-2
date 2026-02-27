@@ -1,18 +1,9 @@
 #include "EntidadBase.h"
 
-EntidadBase::EntidadBase(string n) : nombre(n), activo(true) {
+EntidadBase::EntidadBase(string n) : nombre(n), activo(true) {}
 
+string EntidadBase::getNombre() const { return nombre; }
 
-}
+void EntidadBase::alternarEstado() { activo = !activo; }
 
-string EntidadBase::getNombre()const {
-
-}
-
-void EntidadBase::alternarEstado() {
-	activo != activo;
-}
-
-bool EntidadBase::estaActivo()const {
-	return activo;
-}
+bool EntidadBase::isActivo() const { return activo; }

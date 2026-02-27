@@ -1,10 +1,6 @@
 #pragma once
-#include <string>
-using namespace std;
-
-class IConsumidor
-{
+class IConsumidor {
 public:
-	virtual ~IConsumidor() = default;
-	virtual double consumirEnergia() = 0;
+    virtual ~IConsumidor() = default;
+    virtual double consumirEnergia() = 0;
 };

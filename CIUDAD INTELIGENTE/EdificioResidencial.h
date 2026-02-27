@@ -2,15 +2,13 @@
 #include "EntidadBase.h";
 #include "IConsumidor.h";
 
-class EdificioResidencial : public EntidadBase, public IConsumidor
-{
+class EdificioResidencial : public EntidadBase, public IConsumidor {
 private:
-	double consumoBase;
-	int habitantes;
+    double consumoBase;
+    int habitantes;
 
 public:
-	EdificioResidencial(string n, double base, int hab);
-	double consumirEnergia() override;
-	string getDetalleEstado()const override;
-
+    EdificioResidencial(std::string n, double base, int hab);
+    double consumirEnergia() override;
+    std::string getDetalleEstado() const override;
 };
