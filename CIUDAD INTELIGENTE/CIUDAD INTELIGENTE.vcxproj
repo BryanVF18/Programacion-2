@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="CIUDAD INTELIGENTE.cpp" />
     <ClCompile Include="ComplejoIndustrial.cpp" />
+    <ClCompile Include="Distrito.cpp" />
     <ClCompile Include="EdificioResidencial.cpp" />
     <ClCompile Include="EntidadBase.cpp" />
     <ClCompile Include="GestorCiudad.cpp" />
@@ -132,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ComplejoIndustrial.h" />
+    <ClInclude Include="Distrito.h" />
     <ClInclude Include="EdificioResidencial.h" />
     <ClInclude Include="EntidadBase.h" />
     <ClInclude Include="GestorCiudad.h" />
