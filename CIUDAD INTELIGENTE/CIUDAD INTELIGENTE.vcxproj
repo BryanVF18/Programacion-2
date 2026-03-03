@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CentralEmergencias.cpp" />
     <ClCompile Include="CIUDAD INTELIGENTE.cpp" />
     <ClCompile Include="ComplejoIndustrial.cpp" />
     <ClCompile Include="Distrito.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="PlantaSolar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CentralEmergencias.h" />
     <ClInclude Include="ComplejoIndustrial.h" />
     <ClInclude Include="Distrito.h" />
     <ClInclude Include="EdificioResidencial.h" />
