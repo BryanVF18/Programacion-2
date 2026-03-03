@@ -10,12 +10,12 @@ using namespace std;
 
 int main()
 {
-    auto ciudad = make_unique<GestorCiudad > ();
+    auto ciudad = make_unique<GestorCiudad >();
 
     //Generar una simulacion a partir de polimorfismo y sustitucion de Liscov
 
-    ciudad->agregarEntidad(make_shared<PlantaSolar>("Planta Solar de Golfito", 200.00));
-
+    /*ciudad->agregarEntidad(make_shared<PlantaSolar>("Planta Solar de Golfito", 200.00));
+}
     ciudad->agregarEntidad(make_shared<EdificioResidencial>("Condominio Altavista", 40.00, 50));
     
     ciudad->agregarEntidad(make_shared<ComplejoIndustrial>("Planta RECOPE", 100.00, 150.00));
@@ -29,5 +29,5 @@ int main()
         ciudad->procesarTurno();
     }
     return 0;
-}
+}*/
 
