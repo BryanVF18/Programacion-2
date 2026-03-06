@@ -3,6 +3,8 @@
 #include <string>
 #include "IEntidad.h"
 #include <vector>
+#include "IEstrategiaEnergia.h"
+
 
 //FORWARD DECLARATION:
 //Resolvemos la dependencia mutua, no se incluyen los .h para evitar la recursividad infinita
@@ -24,6 +26,9 @@ private:
 
 	shared_ptr<CentralEmergencias>centralAsignada;
 
+	shared_ptr<IEstrategiaEnergia>delegadoEnergia;
+
+
 
 public:
 	Distrito(string n);
@@ -44,5 +49,20 @@ public:
 	//Metodo que dispara la comunicacion a la central
 
 	void generarAlerta(string causa);
+
+	//Generamos los metodos para delegar el control de la energia
+
+	void setDelegado(shared_ptr<IEstrategiaEnergia>del) 
+	{
+		delegadoEnergia = del;
+	}
+
+	void gestionarCrisis() 
+	{
+		if (delegadoEnergia) {
+			delegadoEnergia->ejecutarAccion(this);
+
+		}
+	}
 };
 

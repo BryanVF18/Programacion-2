@@ -6,28 +6,45 @@
 #include "PlantaSolar.h"
 #include "EdificioResidencial.h"
 #include "ComplejoIndustrial.h"
+#include "CiudadException.h"
+#include "EstrategiaAhorro.h"
+#include "DeficitRecursosException.h"
+
+
 using namespace std;
 
 int main()
 {
-    auto central911 = make_shared<CentralEmergencias>("911 CIUDAD INTELIGENTE");
-    GestorCiudad gestor(central911);
+    try {
+        auto central911 = make_shared<CentralEmergencias>("911 CIUDAD INTELIGENTE");
+        GestorCiudad gestor(central911);
 
-    //Crear el distrito residencial
-    auto distResidencial = make_shared<Distrito>("Zona Norte - Residencial");
-    distResidencial->agregarEdificio(make_shared<EdificioResidencial>("Torre A", 20, 100));
-    distResidencial->agregarEdificio(make_shared<EdificioResidencial>("Torre B", 20, 80));
+        //Crear el distrito residencial
+        auto distResidencial = make_shared<Distrito>("Zona Norte - Residencial");
+        distResidencial->agregarEdificio(make_shared<EdificioResidencial>("Torre A", 20, 100));
+        distResidencial->agregarEdificio(make_shared<EdificioResidencial>("Torre B", 20, 80));
 
-    //Crear el distrito industrial
-    auto distIndustrial = make_shared<Distrito>("Parque Insdustrial Sur");
-    distIndustrial->agregarEdificio(make_shared<PlantaSolar>("Planta Solar", 500));
-    distIndustrial->agregarEdificio(make_shared<ComplejoIndustrial>("Fabrica de Pinturas", 100));
+        //Crear el distrito industrial
+        auto distIndustrial = make_shared<Distrito>("Parque Insdustrial Sur");
+        distIndustrial->agregarEdificio(make_shared<PlantaSolar>("Planta Solar", 500));
+        distIndustrial->agregarEdificio(make_shared<ComplejoIndustrial>("Fabrica de Pinturas", 100));
 
 
-    //Retornamos el reporte
-    gestor.agregarDistrito(distResidencial);
-    gestor.agregarDistrito(distIndustrial);
-    gestor.procesarTurno();
+        //Retornamos el reporte
+        gestor.agregarDistrito(distResidencial);
+        gestor.agregarDistrito(distIndustrial);
+        gestor.procesarTurno();
+    }
+    catch (const DeficitRecursoException& error) {
+        //Manejamos la excepcion: Aceptamos el error especifico
+        cerr << "FALLO EN LA CIUDAD: " << error.what() << endl;
+        cerr << "Accion recomendada: Revisar la red electrica" << endl;
+    }
+    catch (const exception& error)
+    {
+        cerr << "Error Inesperado" << error.what() << endl;
+    }
+
     return 0;
 }
 

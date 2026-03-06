@@ -1,6 +1,8 @@
 #include "GestorCiudad.h"
 #include <iostream>
 #include <iomanip>
+#include "CiudadException.h"
+#include "DeficitRecursosException.h"
 
 GestorCiudad::GestorCiudad(shared_ptr<CentralEmergencias>central) : turnoActual(0), centralUrbana(central) {}
 
@@ -12,10 +14,21 @@ void GestorCiudad::agregarDistrito(std::shared_ptr<Distrito> nuevoDistrito) {
 
 
 void GestorCiudad::procesarTurno() {
+
+   
     turnoActual++;
     double prodTotal = 0, consTotal = 0;
 
     std::cout << "\n>>> TURNO " << turnoActual << " <<<\n";
+
+    cout << "------------------------------------\n";
+    cout << "REPORTE GLOBAL DE LA CIUDAD POR DISTRITO\n";
+    cout << "Energia generada: " << prodTotal << "kw\n";
+    cout << "Emergia consumida: " << consTotal << "kw\n";
+    cout << "Balance: " << (prodTotal - consTotal) << "kw\n";
+    cout << "------------------------------------\n";
+
+
     for (auto& dist : distritos) {
       /*  std::cout << std::left << std::setw(20) << e->getNombre() << " | " << e->getDetalleEstado() << "\n";
 
@@ -32,17 +45,16 @@ void GestorCiudad::procesarTurno() {
 
         if (consTotal > prodTotal) {
             dist->generarAlerta("Deficit energetico critico");
-            //Downcast / upcast: La central inspecciona el distrito
+            //Downcast / Upcast: La central inspecciona el distrito
             //Se pasa el shared_ptr de distrito ( y se mantiene anomino)
             centralUrbana->realizarInspeccion(dist);
+            throw new DeficitRecursoException(dist->getNombre(), consTotal - prodTotal);
         }
     }
-    cout << "------------------------------------\n";
-    cout << "REPORTE GLOBAL DE LA CIUDAD POR DISTRITO\n";
-    cout << "Energia generada: " << prodTotal << "kw\n";
-    cout << "Emergia consumida: " << consTotal << "kw\n";
-    cout << "Balance: " << (prodTotal - consTotal) << "kw\n";
-    cout << "------------------------------------\n";
+   
+
+
+  
 
     //Logica de alerta: si hay un deficit el distrito reporta a la central de emergencias
 

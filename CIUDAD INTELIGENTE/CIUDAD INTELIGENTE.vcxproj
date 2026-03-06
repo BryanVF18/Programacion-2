@@ -125,11 +125,11 @@
   <ItemGroup>
     <ClCompile Include="CentralEmergencias.cpp" />
     <ClCompile Include="CIUDAD INTELIGENTE.cpp" />
-    <ClCompile Include="CiudadException.cpp" />
     <ClCompile Include="ComplejoIndustrial.cpp" />
     <ClCompile Include="Distrito.cpp" />
     <ClCompile Include="EdificioResidencial.cpp" />
     <ClCompile Include="EntidadBase.cpp" />
+    <ClCompile Include="EstrategiaAhorro.cpp" />
     <ClCompile Include="GestorCiudad.cpp" />
     <ClCompile Include="PlantaSolar.cpp" />
   </ItemGroup>
@@ -137,12 +137,15 @@
     <ClInclude Include="CentralEmergencias.h" />
     <ClInclude Include="CiudadException.h" />
     <ClInclude Include="ComplejoIndustrial.h" />
+    <ClInclude Include="DeficitRecursosException.h" />
     <ClInclude Include="Distrito.h" />
     <ClInclude Include="EdificioResidencial.h" />
     <ClInclude Include="EntidadBase.h" />
+    <ClInclude Include="EstrategiaAhorro.h" />
     <ClInclude Include="GestorCiudad.h" />
     <ClInclude Include="IConsumidor.h" />
     <ClInclude Include="IEntidad.h" />
+    <ClInclude Include="IEstrategiaEnergia.h" />
     <ClInclude Include="IProductor.h" />
     <ClInclude Include="PlantaSolar.h" />
   </ItemGroup>
