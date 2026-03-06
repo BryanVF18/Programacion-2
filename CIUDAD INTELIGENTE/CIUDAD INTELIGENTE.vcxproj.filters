@@ -39,6 +39,9 @@
     <ClCompile Include="CentralEmergencias.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="CiudadException.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ComplejoIndustrial.h">
@@ -69,6 +72,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="CentralEmergencias.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="CiudadException.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
