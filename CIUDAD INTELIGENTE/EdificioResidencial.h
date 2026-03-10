@@ -1,6 +1,6 @@
 #pragma once
-#include "EntidadBase.h";
-#include "IConsumidor.h";
+#include "EntidadBase.h"
+#include "IConsumidor.h"
 
 class EdificioResidencial : public EntidadBase, public IConsumidor {
 private:
