@@ -4,21 +4,18 @@
 #include "Distrito.h"
 #include "CentralEmergencias.h"
 
-using namespace std;
+// PRINCIPIO ABIERTO/CERRADO (OCP):
+// El Motor está CERRADO a la modificación (no lo tocaremos para agregar nuevos edificios)
+// pero ABIERTO a la extensión (podemos crear infinitas clases que hereden de IEntidad).
 
-//PRINCIPIO ABIERTO/CERRADO
-//SOLID(O) EL GESTOR ESTA CERRADO A LA MODIFICACION, SOLO "MUEVE DATOS" NO SE TOCA PARA AGREGAR NUEVAS ENTIDADES
 class GestorCiudad {
 private:
     std::vector<std::shared_ptr<Distrito>> distritos;
+    std::shared_ptr<CentralEmergencias> centralUrbana; // La central del motor
     int turnoActual;
-    shared_ptr<CentralEmergencias>centralUrbana;//La central de emergencias del gestor
 
 public:
-    //Principio KISS: Solo inicializar lo más basico
-
-    GestorCiudad(shared_ptr<CentralEmergencias>central);
-    void agregarDistrito(std::shared_ptr<Distrito> nuevoDistrito);
+    GestorCiudad(std::shared_ptr<CentralEmergencias> central);
+    void agregarDistrito(std::shared_ptr<Distrito> d);
     void procesarTurno();
-
 };

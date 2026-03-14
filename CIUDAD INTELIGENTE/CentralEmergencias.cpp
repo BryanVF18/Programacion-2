@@ -1,20 +1,16 @@
 #include "CentralEmergencias.h"
-#include "Distrito.h"
+#include "Distrito.h" // Aquí sí incluimos el .h para poder usar sus métodos
 #include <iostream>
-using namespace std;
 
-CentralEmergencias::CentralEmergencias(string n) :nombre(n), reportesRecibidos(0) {
+CentralEmergencias::CentralEmergencias(std::string n) : nombre(n), reportesRecibidos(0) {}
 
+void CentralEmergencias::recibirAlerta(std::string mensaje) {
+    reportesRecibidos++;
+    std::cout << "[CENTRAL " << nombre << "] ALERTA RECIBIDA: " << mensaje << std::endl;
 }
 
-void CentralEmergencias::recibirAlerta(string mensaje) {
-
-	reportesRecibidos++;
-	cout << "[CENTRAL " << nombre << " ] ALERTA RECIBIDA: " << mensaje << endl;
-
-}
-
-void CentralEmergencias::realizarInspeccion(shared_ptr<Distrito>d) {
-	
-	cout << "[CENTRAL] Inspeccionando distrito " << d->getNombre() << endl;
+void CentralEmergencias::realizarInspeccion(std::shared_ptr<Distrito> d) {
+    // UPCAST EXPLÍCITO: Tratamos al distrito como un objeto base si fuera necesario
+    // DOWNCAST: Si el motor nos pasara una IEntidad, usaríamos dynamic_cast.
+    std::cout << "[CENTRAL] Inspeccionando distrito: " << d->getNombre() << std::endl;
 }

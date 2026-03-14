@@ -3,11 +3,15 @@
 #include <string>
 #include "CiudadException.h"
 
-//Esta es la excepcion especifica para cuando producimos menos de los que necesitamos
-//YAGNI: Solo creamos lo que necesitamos
-
-class DeficitRecursoException : public CiudadException {
-public: 
+//Esta es la excepción específica para déficit de energia
+//Cuando producimos menos de lo que consumimos
+//YAGNI: Solo creamos lo necesario, un .h, sin .cpp porque
+//no hay nada que desarrollar
+class DeficitRecursoException : public CiudadException
+{
+public:
 	DeficitRecursoException(const string& distrito, double faltante)
-		:CiudadException("ERROR CRITICO: Deficit en: "+ distrito+ ". Faltan "+to_string(faltante)+" kw."){ }
+		: CiudadException("ERROR CRITICO: Deficit en: " + distrito +
+			". Faltan " + to_string(faltante) + " kw.") {
+	}
 };

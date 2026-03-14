@@ -1,7 +1,7 @@
 #pragma once
 #include "EntidadBase.h"
-#include "IConsumidor.h"
 #include "IProductor.h"
+#include "IConsumidor.h"
 
 class ComplejoIndustrial : public EntidadBase, public IProductor, public IConsumidor {
 private:
@@ -14,3 +14,4 @@ public:
     double consumirEnergia() override;
     std::string getDetalleEstado() const override;
 };
+

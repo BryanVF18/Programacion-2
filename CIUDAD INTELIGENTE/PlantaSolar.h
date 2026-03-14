@@ -1,11 +1,12 @@
 #pragma once
-#include <string>
-#include"IProductor.h"
-#include"EntidadBase.h"
+#include "EntidadBase.h"
+#include "IProductor.h"
 using namespace std;
 
-//SOLID(L)
-//LA PLANTA SOLAR PUEDE HACER PASAR SUSTIUIR A IENTIDAD EN CUALQUIER PARTE DEL CODIGO SIN QUE EL PROGRAMA FALLE 
+// PRINCIPIO DE SUSTITUCIÓN DE LISKOV (LSP):
+// PlantaSolar PUEDE sustituir a IEntidad en cualquier parte del código
+// sin que el programa falle. Es un subtipo real.
+
 class PlantaSolar : public EntidadBase, public IProductor {
 private:
     double capacidadMaxima;

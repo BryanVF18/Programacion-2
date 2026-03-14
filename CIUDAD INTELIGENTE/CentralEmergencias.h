@@ -3,28 +3,23 @@
 #include <vector>
 #include <memory>
 
-using namespace std;
-
-//Principio de parnas: Ocultamos la implementación interna del distrito
-//Declaración adelantada: Avisamos que la clase distrito existe sin incluir lo que hace su .h
-//Esto resuelve la dependencia mutua inicial
-
+// PRINCIPIO DE PARNAS: Ocultamos la implementación interna del Distrito
+// FORWARD DECLARATION: Avisamos que la clase Distrito existe sin incluir su .h
+// Esto resuelve la DEPENDENCIA MUTUA inicial.
 class Distrito;
 
-class CentralEmergencias
-{
-private: 
-	//YAGNI: No creamos una lista con el historial de llamadas de emergencias ni los detalles, solo de almacena el conteo hasta tener una situacion que resolver
-
-	string nombre;
-	int reportesRecibidos;
+class CentralEmergencias {
+private:
+    std::string nombre;
+    // YAGNI: No creamos una lista de "Historial de llamadas" complejo 
+    // porque aún no se solicita (Solo guardamos el conteo).
+    int reportesRecibidos;
 
 public:
-	CentralEmergencias(string n);
-	void recibirAlerta(string mensaje);
+    CentralEmergencias(std::string n);
+    void recibirAlerta(std::string mensaje);
 
-		//Metodo que solo se ejecuta en caso de que la emergencia se realice y se debe conocer el distrito para referenciarlo
-
-	void realizarInspeccion(shared_ptr<Distrito>(d));
+    // Este método requerirá conocer la interfaz de Distrito
+    void realizarInspeccion(std::shared_ptr<Distrito> d);
 };
 

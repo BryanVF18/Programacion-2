@@ -1,11 +1,10 @@
 #pragma once
-#include <string>
 #include "IEntidad.h"
 using namespace std;
 
-//LOS ATRIBUTOS NOMBRE Y ACTIVO SON PROTECTED
-//"EL MUNDO EXTERIOR NO SABE CÓMO SE GUARDAN, SOLO SE ACCEDE VÍA MÉTODOS PÚBLICOS"
-
+// PRINCIPIO DE PARNAS (Ocultamiento):
+// Los atributos 'nombre' y 'activo' son protected. 
+// El mundo exterior no sabe CÓMO se guardan, solo accede vía métodos públicos.
 
 class EntidadBase : public IEntidad {
 protected:

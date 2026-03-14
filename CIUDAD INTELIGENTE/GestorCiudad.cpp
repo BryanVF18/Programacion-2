@@ -1,67 +1,45 @@
 #include "GestorCiudad.h"
-#include <iostream>
-#include <iomanip>
 #include "CiudadException.h"
 #include "DeficitRecursosException.h"
+#include <iostream>
 
-GestorCiudad::GestorCiudad(shared_ptr<CentralEmergencias>central) : turnoActual(0), centralUrbana(central) {}
-
-void GestorCiudad::agregarDistrito(std::shared_ptr<Distrito> nuevoDistrito) {
-    distritos.push_back(nuevoDistrito);
-    //Principio de inversion de control: El gestor vincula al distrito una central de emergencias
-    nuevoDistrito->setCentral(centralUrbana);
+GestorCiudad::GestorCiudad(std::shared_ptr<CentralEmergencias> central)
+    : centralUrbana(central), turnoActual(0) {
 }
 
+void GestorCiudad::agregarDistrito(std::shared_ptr<Distrito> d) {
+    distritos.push_back(d);
+    // PRINCIPIO DE INVERSIÓN DE CONTROL: El motor vincula al distrito con la central
+    d->setCentral(centralUrbana);
+}
 
 void GestorCiudad::procesarTurno() {
-
-   
     turnoActual++;
-    double prodTotal = 0, consTotal = 0;
+    double ciudadProd = 0;
+    double ciudadCons = 0;
 
-    std::cout << "\n>>> TURNO " << turnoActual << " <<<\n";
+    std::cout << "\n========== TURNO SIMULADO: " << turnoActual << " ==========\n";
 
-    cout << "------------------------------------\n";
-    cout << "REPORTE GLOBAL DE LA CIUDAD POR DISTRITO\n";
-    cout << "Energia generada: " << prodTotal << "kw\n";
-    cout << "Emergia consumida: " << consTotal << "kw\n";
-    cout << "Balance: " << (prodTotal - consTotal) << "kw\n";
-    cout << "------------------------------------\n";
-
+    std::cout << "--------------------------------------------\n";
+    std::cout << "REPORTE CIUDAD GLOBAL:\n";
+    std::cout << "Energia Generada: " << ciudadProd << " kW\n";
+    std::cout << "Energia Demandada: " << ciudadCons << " kW\n";
+    std::cout << "Balance: " << (ciudadProd - ciudadCons) << " kW\n";
+    std::cout << "============================================\n";
 
     for (auto& dist : distritos) {
-      /*  std::cout << std::left << std::setw(20) << e->getNombre() << " | " << e->getDetalleEstado() << "\n";
-
-        // Usamos dynamic_cast para identificar capacidades en tiempo de ejecución
-        auto p = dynamic_cast<IProductor*>(e.get());
-        if (p) prodTotal += p->producirEnergia();
-
-        auto c = dynamic_cast<IConsumidor*>(e.get());
-        if (c) consTotal += c->consumirEnergia();*/
-
         dist->mostrarReporteDistrito();
-        prodTotal += dist->obtenerProduccionTotal();
-        consTotal += dist->obtenerComsumoTOtal();
+        ciudadProd += dist->obtenerProduccionTotal();
+        ciudadCons += dist->obtenerConsumoTotal();
 
-        if (consTotal > prodTotal) {
-            dist->generarAlerta("Deficit energetico critico");
-            //Downcast / Upcast: La central inspecciona el distrito
-            //Se pasa el shared_ptr de distrito ( y se mantiene anomino)
+        // Lógica de alerta: Si hay déficit, el distrito reporta a la central
+        if (ciudadCons > ciudadProd) {
+            dist->alertarEmergencia("Deficit energetico critico");
+            // DOWNCAST / UPCAST: La central inspecciona el distrito
+            // Aquí se pasa el shared_ptr de Distrito (se trata como tal)
             centralUrbana->realizarInspeccion(dist);
-            throw new DeficitRecursoException(dist->getNombre(), consTotal - prodTotal);
+            throw new DeficitRecursoException(dist->getNombre(), ciudadCons - ciudadProd);
         }
     }
-   
 
-
-  
-
-    //Logica de alerta: si hay un deficit el distrito reporta a la central de emergencias
-
-    
 }
-
-/*void GestorCiudad::mostrarBalance(double prod, double cons) const {
-    std::cout << "BALANCE: Prod: " << prod << "kW | Cons: " << cons << "kW | Estado: "
-        << (prod >= cons ? "ESTABLE" : "CRITICO") << "\n";
-}*/

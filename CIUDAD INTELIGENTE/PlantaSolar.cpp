@@ -11,3 +11,4 @@ double PlantaSolar::producirEnergia() {
 std::string PlantaSolar::getDetalleEstado() const {
     return "Tipo: [Productor] | Eficiencia: " + to_string((int)(eficiencia * 100)) + "%";
 }
+
