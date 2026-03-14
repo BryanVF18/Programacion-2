@@ -1,45 +1,63 @@
 #include "GestorCiudad.h"
-#include "CiudadException.h"
-#include "DeficitRecursosException.h"
+#include "ExcepcionesCiudad.h"
 #include <iostream>
+#include <cstdlib>  // Lo usamos para rand() y srand() que simulan eventos aleatorios (desastres externos)
+#include <ctime>    // Lo usamos para obtener una semilla basada en el tiempo actual para srand()
+using namespace std;
 
-GestorCiudad::GestorCiudad(std::shared_ptr<CentralEmergencias> central)
+GestorCiudad::GestorCiudad(shared_ptr<CentralEmergencias> central)
     : centralUrbana(central), turnoActual(0) {
+    srand(static_cast<unsigned>(time(nullptr)));
 }
 
-void GestorCiudad::agregarDistrito(std::shared_ptr<Distrito> d) {
+void GestorCiudad::agregarDistrito(shared_ptr<Distrito> d) {
     distritos.push_back(d);
-    // PRINCIPIO DE INVERSIÓN DE CONTROL: El motor vincula al distrito con la central
+    // PRINCIPIO DE INVERSION DE CONTROL: El motor vincula al distrito con la central
     d->setCentral(centralUrbana);
 }
 
+
+// procesarTurno() actua como el coordinador de la simulacion.
+// Captura las excepciones que suben desde los distritos y reacciona a ellas
 void GestorCiudad::procesarTurno() {
     turnoActual++;
     double ciudadProd = 0;
     double ciudadCons = 0;
 
-    std::cout << "\n========== TURNO SIMULADO: " << turnoActual << " ==========\n";
+    cout << "\n========== TURNO SIMULADO: " << turnoActual << " ==========\n";
 
-    std::cout << "--------------------------------------------\n";
-    std::cout << "REPORTE CIUDAD GLOBAL:\n";
-    std::cout << "Energia Generada: " << ciudadProd << " kW\n";
-    std::cout << "Energia Demandada: " << ciudadCons << " kW\n";
-    std::cout << "Balance: " << (ciudadProd - ciudadCons) << " kW\n";
-    std::cout << "============================================\n";
+
+    // Simula un fallo tecnico impredecible en el motor.
+    int dado = rand() % 100;
+    if (dado < 20) { //Aqui podemos ajustar la probabilidad de desastre externo
+        throw DesastreExterno(dado);
+    }
 
     for (auto& dist : distritos) {
         dist->mostrarReporteDistrito();
         ciudadProd += dist->obtenerProduccionTotal();
         ciudadCons += dist->obtenerConsumoTotal();
 
-        // Lógica de alerta: Si hay déficit, el distrito reporta a la central
-        if (ciudadCons > ciudadProd) {
-            dist->alertarEmergencia("Deficit energetico critico");
-            // DOWNCAST / UPCAST: La central inspecciona el distrito
-            // Aquí se pasa el shared_ptr de Distrito (se trata como tal)
-            centralUrbana->realizarInspeccion(dist);
-            throw new DeficitRecursoException(dist->getNombre(), ciudadCons - ciudadProd);
+        //Se verifica el balance y llama a gestionar la crisis en caso de existir
+        try {
+            dist->verificarBalance();
+        }
+        catch (const ErrorRecursosInsuficientes& e) {
+
+            cout << "\n  >> " << e.tipoError() << " capturado en el Motor.\n";
+            cout << "  >> Deficit en '" << e.getDistrito()
+                << "': " << e.getDeficit() << " kW faltan.\n";
+            cout << "  >> Accion: Gestionando crisis energetica...\n";
+            dist->gestionarCrisis();
+
+            throw;
         }
     }
 
+    cout << "--------------------------------------------\n";
+    cout << "REPORTE CIUDAD GLOBAL:\n";
+    cout << "  Energia Generada:  " << ciudadProd << " kW\n";
+    cout << "  Energia Demandada: " << ciudadCons << " kW\n";
+    cout << "  Balance:           " << (ciudadProd - ciudadCons) << " kW\n";
+    cout << "============================================\n";
 }

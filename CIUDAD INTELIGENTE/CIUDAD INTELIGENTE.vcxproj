@@ -148,6 +148,7 @@
     <ClInclude Include="EntidadBase.h" />
     <ClInclude Include="EntidadDecoradora.h" />
     <ClInclude Include="EstrategiaAhorro.h" />
+    <ClInclude Include="ExcepcionesCiudad.h" />
     <ClInclude Include="GestorCiudad.h" />
     <ClInclude Include="IConsumidor.h" />
     <ClInclude Include="IEntidad.h" />

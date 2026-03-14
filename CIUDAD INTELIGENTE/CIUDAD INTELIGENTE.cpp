@@ -1,120 +1,144 @@
-// CIUDAD INTELIGENTE.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-
 #include <iostream>
+#include <memory>
 #include "GestorCiudad.h"
-//#include "PlantaSolar.h"
+#include "PlantaSolar.h"
 #include "EdificioResidencial.h"
-//#include "ComplejoIndustrial.h"
-//#include "CiudadException.h"
-//#include "EstrategiaAhorro.h"
-//#include "DeficitRecursoException.h"
+#include "ComplejoIndustrial.h"
+#include "EstrategiaAhorro.h"
 #include "SensorConsumoInteligente.h"
 #include "BlindajeTermico.h"
 #include "ReduccionEmisiones.h"
+#include "ExcepcionesCiudad.h"
 
 using namespace std;
 
-
-// MAIN PARA LA PRUEBA DE LA DECORADORA
-
 int main() {
 
-    cout << "------- PRUEBA CLASE DECORADORA -------";
+    cout << "=== SISTEMA CIUDAD INTELIGENTE - PRUEBA DE EXCEPCIONES ===\n";
+
+    // -----------------------------------------------------------------------
+    // PRUEBA 1: ErrorConfiguracionInvalida
+    // -----------------------------------------------------------------------
+    cout << "\n********************************************\n";
+    cout << "  PRUEBA 1: ErrorConfiguracionInvalida\n";
+    cout << "********************************************\n\n";
+
+    auto centralPrueba = make_shared<CentralEmergencias>("Central-Prueba");
+    GestorCiudad motorPrueba(centralPrueba);
+    auto distPrueba = make_shared<Distrito>("Zona de Prueba");
+    motorPrueba.agregarDistrito(distPrueba);
+
+    try {
+        cout << "[P1] Intentando agregar edificio con nombre vacio...\n";
+        auto edificioInvalido = make_shared<EdificioResidencial>("", 100, 50);
+        distPrueba->agregarEdificio(edificioInvalido);
+        cout << "   (no deberia llegar aqui)\n";
+    }
+    catch (const ExcepcionUrbana& ex) {
+        cout << "\n  [!] " << ex.tipoError() << "\n";
+        cout << "  Mensaje: " << ex.what() << "\n";
+        cout << "  >> Edificio rechazado. Memoria liberada.\n";
+    }
+
+    try {
+        cout << "\n[P2] Intentando agregar edificio nulo (nullptr)...\n";
+        distPrueba->agregarEdificio(nullptr);
+    }
+    catch (const ExcepcionUrbana& ex) {
+        cout << "\n  [!] " << ex.tipoError() << "\n";
+        cout << "  Mensaje: " << ex.what() << "\n";
+        cout << "  >> Puntero nulo rechazado. Sin fuga de memoria.\n";
+    }
+
+    cout << "\n--------------------------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------" << endl << endl;
 
 
-    auto edificio = make_shared<EdificioResidencial>("Edificio Central", 200, 20);
+    // -----------------------------------------------------------------------
+    // PRUEBA 2: ErrorRecursosInsuficientes 
+    // -----------------------------------------------------------------------
 
-    cout << "\nConsumo inicial: " << edificio->consumirEnergia() << endl;
+    cout << "\n********************************************\n";
+    cout << "  PRUEBA 2: ErrorRecursosInsuficientes\n";
+    cout << "********************************************\n\n";
 
-    auto edificioSensor = make_shared<SensorConsumoInteligente>("Sensor Inteligente", edificio);
+    auto central2 = make_shared<CentralEmergencias>("Central-Alpha");
+    GestorCiudad motor2(central2);
+    auto dist2 = make_shared<Distrito>("Zona Critica");
+    // Se genera un deficit del 700% para fozar la excepcion
+    dist2->agregarEdificio(make_shared<PlantaSolar>("Solar-Mini", 100));
+    dist2->agregarEdificio(make_shared<EdificioResidencial>("Mega Complejo", 700, 200));
+    motor2.agregarDistrito(dist2);
 
-    cout << "Consumo con sensor inteligente: " << edificioSensor->consumirEnergia() << endl;
+    cout << "Configuracion: Produccion=100 kW, Consumo=800 kW (deficit > 50%)\n";
 
-    auto edificioBlindado = make_shared<BlindajeTermico>("Blindaje Termico", edificioSensor);
-
-    cout << "Consumo con sensor + blindaje: " << edificioBlindado->consumirEnergia() << endl;
-
-    cout << "\nFlujo de decoradores aplicado:" << endl;
-    cout << "Edificio -> Sensor -> Blindaje" << endl;
-
-    // Ahora probamos que GestorCiudad sigue procesando el objeto sin saber que ha sido decorado (Polimorfismo)
-
-    auto central911 = make_shared<CentralEmergencias>("911-EcoCity");
-    GestorCiudad motor(central911);
-    auto distIndustrial = make_shared<Distrito>("Parque Industrial");
-    distIndustrial->agregarEdificio(edificioBlindado);
-    motor.agregarDistrito(distIndustrial);
-    motor.procesarTurno();
+    try {
+        motor2.procesarTurno();
+    }
+    catch (const ExcepcionUrbana& ex) {
+        cout << "\n[MAIN] Excepcion capturada en main\n";
+        cout << "  Tipo   : " << ex.tipoError() << "\n";
+        cout << "  Detalle: " << ex.what() << "\n";
+        if (auto* err = dynamic_cast<const ErrorRecursosInsuficientes*>(&ex)) {
+            cout << "  Deficit exacto: " << err->getDeficit() << " kW.\n";
+        }
+        cout << "  >> Sistema registra el incidente y continua operacion.\n";
+    }
 
 
+    cout << "\n--------------------------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------" << endl << endl;
+
+    // -----------------------------------------------------------------------
+    // PRUEBA 3: DesastreExterno (Para la prueba los forzamos) 
+    // -----------------------------------------------------------------------
+    cout << "\n********************************************\n";
+    cout << "  PRUEBA 3: DesastreExterno\n";
+    cout << "********************************************\n";
+
+    cout << "\n [NOTA] ESTE ERROR SE FUERZA A PROPOSITO UNICAMENTE PARA LA VERIFICACION" << endl << endl;
+
+    try {
+        throw DesastreExterno(42);
+    }
+    catch (const ExcepcionUrbana& ex) {
+        cout << "[!] " << ex.tipoError() << "\n";
+        cout << "  Mensaje: " << ex.what() << "\n";
+        if (auto* des = dynamic_cast<const DesastreExterno*>(&ex)) {
+            cout << "  Codigo de fallo: " << des->getCodigo() << "\n";
+        }
+        cout << "  >> Sistema activa protocolo de emergencia.\n";
+    }
 
 
+    cout << "\n--------------------------------------------------------------------------" << endl;
+    cout << "--------------------------------------------------------------------------" << endl << endl;
+
+    // -----------------------------------------------------------------------
+    // PRUEBA 4: Turno normal sin errores
+    // -----------------------------------------------------------------------
+    cout << "\n********************************************\n";
+    cout << "  PRUEBA 4: Turno Normal (Sin Excepciones)\n";
+    cout << "********************************************\n";
+
+    auto central4 = make_shared<CentralEmergencias>("Central-Beta");
+    GestorCiudad motor4(central4);
+    auto dist4 = make_shared<Distrito>("Zona Verde");
+    // Produccion generosa, consumo moderado -> balance positivo
+    dist4->agregarEdificio(make_shared<PlantaSolar>("Solar-Max", 500));
+    dist4->agregarEdificio(make_shared<EdificioResidencial>("Residencial Norte", 100, 50));
+    motor4.agregarDistrito(dist4);
+
+    cout << "Configuracion: Produccion=500 kW, Consumo~125 kW (balance positivo)\n";
+
+    try {
+        motor4.procesarTurno();
+        cout << "[OK] Turno completado sin excepciones.\n";
+    }
+    catch (const ExcepcionUrbana& ex) {
+        cout << "[NOTA] Ocurrio un " << ex.tipoError() << " aleatorio: " << ex.what() << "\n";
+    }
+
+    cout << "\n=== Final de la prueba ===\n";
     return 0;
-
-
 }
-
-
-/*int main()
-{
-    try
-    {
-        // 1. Instanciamos la Central (Objeto de alto nivel)
-        auto central911 = std::make_shared<CentralEmergencias>("911-EcoCity");
-
-        // 2. Creamos el Motor inyectando la central (DIP - Inversión de Dependencias)
-        GestorCiudad motor(central911);
-
-        // 3. Configuramos la infraestructura
-        auto distIndustrial = std::make_shared<Distrito>("Parque Industrial");
-
-        // UPCAST: PlantaSolar es un IEntidad. Se guarda en el vector del distrito automáticamente.
-        distIndustrial->agregarEdificio(std::make_shared<PlantaSolar>("Solar-Max", 100));
-
-        // Forzamos un déficit para ver la central en acción
-        distIndustrial->agregarEdificio(std::make_shared<EdificioResidencial>("Mega Torre", 500, 1000));
-
-        motor.agregarDistrito(distIndustrial);
-
-        // PRINCIPIO YAGNI: No creamos un menú complejo, solo ejecutamos la simulación necesaria
-        std::cout << "Iniciando simulacion de emergencia...\n";
-        motor.procesarTurno();
-    }
-    catch (const DeficitRecursoException& error)
-    {
-        //Manejamos la excepción: Aceptamos el error específico
-        std::cerr << "FALLO EN LA CIUDAD: " << error.what() << std::endl;
-        std::cerr << "Acción recomendada: Revisar la red eléctrica" << std::endl;
-    }
-    catch (const std::exception& error)
-    {
-        std::cerr << "Error Inesperado" << error.what() << std::endl;
-    }
-
-    return 0;
-}
-*/
-
-/*
-auto ciudad = make_unique<GestorCiudad >();
-
-//Generar una simulacion a partir de polimorfismo y sustitucion de Liscov
-
-ciudad->agregarEntidad(make_shared<PlantaSolar>("Planta Solar de Golfito", 200.00));
-}
-    ciudad->agregarEntidad(make_shared<EdificioResidencial>("Condominio Altavista", 40.00, 50));
-
-    ciudad->agregarEntidad(make_shared<ComplejoIndustrial>("Planta RECOPE", 100.00, 150.00));
-
-    cout << "--- SISTEMA DE GESTION CIG --- \n ";
-    cout << "Fase 1: SOLID\n";
-    cout << "Presione ENTER para ejecutar el proceso de revision\n";
-    cout << "Presione x para salir\n";
-
-    while (cin.get() != 'x') {
-        ciudad->procesarTurno();
-    }
-    return 0;
-    
-    */

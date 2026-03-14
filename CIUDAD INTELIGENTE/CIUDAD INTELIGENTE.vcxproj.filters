@@ -110,5 +110,8 @@
     <ClInclude Include="SensorConsumoInteligente.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="ExcepcionesCiudad.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
