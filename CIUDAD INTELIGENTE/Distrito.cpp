@@ -84,3 +84,87 @@ void Distrito::verificarBalance() const {
         throw ErrorRecursosInsuficientes(nombre, prod, cons);
     }
 }
+
+void Distrito::guardarReporteTexto(string nombreArchivo)const {
+    //1. Creamos el archivo
+    ofstream archivo(nombreArchivo); //Esto por defecto esta en modo texto
+    //2. Verificamos que el archivo se haya creado
+    if (!archivo) throw runtime_error("No se pudo crear el reporte");
+    
+    //Si el archivo se creo, comenzamos la escrituras de los datos
+    archivo << "-----Reporte de Distrito -----" << endl;
+    archivo << nombre << endl;
+    for (auto& e : edificios)
+    {
+        e->serializarTexto(archivo);
+    }
+
+    //4. Tenemos que cerrar el archivo, de lo contrario queda 
+    // abierto para siempre provocando el colapso de memoria inminente
+    archivo.close();
+
+}
+
+
+void Distrito::guardarEstadoBinario(string nombreArchivo)const {
+
+    //1. Vamos a escribir en modo binario
+    ofstream archivo(nombreArchivo, ios::binary);
+
+    //2. Verificamos que el archivo exista
+    if (!archivo)throw runtime_error("Error al escribir el archivo binario?\n");
+    
+    //3. Guardamos los datos en el archivo
+    //Iniciamos por la cantidad de edificios
+    size_t cantidad = edificios.size();
+    archivo.write(reinterpret_cast<const char*>(&cantidad), sizeof(cantidad));
+
+    for (auto& e : edificios)
+    {
+        e->serializarBinario(archivo);
+    }
+
+    //4. Cerramos el archivo
+
+    archivo.close();
+}
+
+void Distrito::cargarDesdeTexto(string nombreArchivo) {
+
+    //1. Abrir el archivo y definir un espacio para almacenar las lineas
+    ifstream archivo(nombreArchivo);
+    string linea;
+
+    //2. Tenemos que verificar que existe el archivo
+    if (!archivo.is_open())throw runtime_error("No se pudo abrir el reporte\n");
+
+    //Limpiamos los edificios actuales para cargar los nuevos
+
+    this->edificios.clear();
+    while (getline(archivo, linea)) 
+    {
+        //Ignoramos lineas de encabezado que no inicien con 
+        if (linea.find("RESIDENCIAL") == string::npos && linea.find("INDUSTRIAL") == string::npos)continue;
+
+        stringstream ss(linea);
+        string tipo, nombreEdificio, habString, consumoString;
+
+        //Separamos por comas, TIPO, NOMBRE, HABITANTES Y CONSUMO
+
+        getline(ss, tipo, ", ");
+        getline(ss, nombreEdificio, ", ");
+        getline(ss, consumoString, ", ");
+        getline(ss, habString, ", ");
+
+        //Por el momento solo tenemos edificios redidenciales
+        //Entonces solo leemos edificios residenciales
+
+        if (tipo == "1") {
+            auto respuesta = make_shared<EdificioResidencial>(nombreEdificio,
+                stod(consumoString), stoi(habString));
+
+                this->agregarEdificio(respuesta);
+        }
+    }
+    archivo.close();
+}

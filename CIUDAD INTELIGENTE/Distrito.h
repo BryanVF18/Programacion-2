@@ -4,6 +4,7 @@
 #include <string>
 #include "IEntidad.h"
 #include "IEstrategiaEnergia.h"
+#include <sstream> //El encargado de la lectura de archivos 
 
 using namespace std;
 
@@ -53,5 +54,19 @@ public:
             delegadoEnergia->ejecutarAccion(this);
         }
     }
+
+    //Principio de Responsabilidad única 
+    // El distrito tiene la responsabilidad de reportar los datos 
+    // La identidad no deberia reportar los datos por si misma 
+    // Para eso hay una cadena de responsabilidades 
+    // PISTA: Si no existe el distrito no hay edificios
+
+    void guardarReporteTexto(string nombreArchivo)const;
+    void guardarEstadoBinario(string nombreArchivo)const;
+
+    void cargarDesdeTexto(string nombreArchivo);
+    void cargarDesdeBinario(string nombreArchivo);
+
+
 };
 
