@@ -1,9 +1,13 @@
 ﻿  CentralEmergencias.cpp
   CiudadInteligente.cpp
+  ComplejoIndustrial.cpp
   Distrito.cpp
+  EdificioResidencial.cpp
+  EntidadBase.cpp
   EstacionCargaElectrica.cpp
   EstrategiaAhorro.cpp
   GestorArchivos.cpp
   GestorCiudad.cpp
+  PlantaSolar.cpp
   Generando código...
-  CiudadInteligente.vcxproj -> C:\Users\Deivert Guiltrichs\source\repos\CiudadInteligente\x64\Debug\CiudadInteligente.exe
+  CiudadInteligente.vcxproj -> C:\Users\ESCINF\Source\Repos\Programacion-2\CiudadInteligente\x64\Debug\CiudadInteligente.exe

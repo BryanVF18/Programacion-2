@@ -32,7 +32,7 @@ void GestorCiudad::procesarTurno() {
         // Si el distrito entra en déficit, se activa la gestión local y se reporta
         if (consDistrito > prodDistrito) {
             dist->gestionarCrisis();
-            dist->alertarEmergencia("Déficit energético crítico");
+            dist->alertarEmergencia("Deficit energetico critico");
 
             // DOWNCAST / UPCAST: La central inspecciona el distrito
             // Aquí se pasa el shared_ptr de Distrito (se trata como tal)
@@ -47,8 +47,8 @@ void GestorCiudad::procesarTurno() {
 
     std::cout << "--------------------------------------------\n";
     std::cout << "REPORTE CIUDAD GLOBAL:\n";
-    std::cout << "Energía Generada: " << ciudadProd << " kW\n";
-    std::cout << "Energía Demandada: " << ciudadCons << " kW\n";
+    std::cout << "Energia Generada: " << ciudadProd << " kW\n";
+    std::cout << "Energia Demandada: " << ciudadCons << " kW\n";
     std::cout << "Balance: " << (ciudadProd - ciudadCons) << " kW\n";
     std::cout << "============================================\n";
 }
