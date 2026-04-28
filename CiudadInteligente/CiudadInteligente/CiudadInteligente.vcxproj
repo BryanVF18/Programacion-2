@@ -136,11 +136,13 @@
     <ClCompile Include="PlantaSolar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AdaptadorSensorTrafico.h" />
     <ClInclude Include="AnalizadorGenerico.h" />
     <ClInclude Include="CentralEmergencias.h" />
     <ClInclude Include="CiudadException.h" />
     <ClInclude Include="ColeccionGenerica.h" />
     <ClInclude Include="ComplejoIndustrial.h" />
+    <ClInclude Include="ComponenteVial.h" />
     <ClInclude Include="DeficitRecursoException.h" />
     <ClInclude Include="Distrito.h" />
     <ClInclude Include="EdificioResidencial.h" />
@@ -154,7 +156,10 @@
     <ClInclude Include="IEstrategiaEnergia.h" />
     <ClInclude Include="IProductor.h" />
     <ClInclude Include="IteradorDistrito.h" />
+    <ClInclude Include="MedicionTrafico.h" />
     <ClInclude Include="PlantaSolar.h" />
+    <ClInclude Include="SensorTraficoExterno.h" />
+    <ClInclude Include="ViaAlterna.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
