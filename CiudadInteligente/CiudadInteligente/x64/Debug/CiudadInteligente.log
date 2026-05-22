@@ -1,7 +1,18 @@
-﻿  CentroControlVial.cpp
+﻿  CentralEmergencias.cpp
+  CentroControlVial.cpp
+  CiudadInteligente.cpp
+  ComplejoIndustrial.cpp
   CorredorVial.cpp
+  Distrito.cpp
+  EdificioResidencial.cpp
+  EntidadBase.cpp
+  EstacionCargaElectrica.cpp
+  EstrategiaAhorro.cpp
   FabricaCarretera.cpp
+  GestorArchivos.cpp
+  GestorCiudad.cpp
+  PlantaSolar.cpp
   SimuladorCarreterasInteligentes.cpp
   ViaAlterna.cpp
   Generando código...
-  CiudadInteligente.vcxproj -> C:\Users\Deivert Guiltrichs\source\repos\CiudadInteligente\x64\Debug\CiudadInteligente.exe
+  CiudadInteligente.vcxproj -> C:\Users\ESCINF\Downloads\Nueva carpeta\CiudadInteligente\x64\Debug\CiudadInteligente.exe
